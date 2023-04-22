@@ -19,5 +19,4 @@ end
 RuboCop::RakeTask.new
 
 task test: ["test:postgresql", "test:mysql2", "test:sqlite3"]
-
-task default: :test
+task default: [:rubocop, :test]
