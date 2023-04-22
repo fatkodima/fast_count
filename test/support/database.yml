@@ -7,7 +7,7 @@ postgresql:
 
 mysql2:
   adapter: mysql2
-  host: localhost
+  host: 127.0.0.1
   database: fast_count_test
   username: root
   password: root

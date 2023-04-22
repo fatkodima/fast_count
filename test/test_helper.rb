@@ -5,6 +5,7 @@ require "fast_count"
 
 require "pg"
 require "mysql2"
+require "sqlite3"
 
 require "minitest/autorun"
 

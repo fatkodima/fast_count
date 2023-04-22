@@ -1,5 +1,7 @@
 # FastCount
 
+[![Build Status](https://github.com/fatkodima/fast_count/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/fatkodima/fast_count/actions/workflows/ci.yml)
+
 Unfortunately, it's currently notoriously difficult and expensive to get an exact count on large tables.
 
 Luckily, there are [some tricks](https://www.citusdata.com/blog/2016/10/12/count-performance) for quickly getting fairly accurate estimates. For example, on a PostgreSQL table with over 450 million records, you can get a 99.82% accurate count within a fraction of the time. See the table below for an example dataset.
