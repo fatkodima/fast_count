@@ -56,6 +56,7 @@ PLATFORMS
   x86_64-darwin-20
 
 DEPENDENCIES
+  activerecord
   fast_count!
   minitest (~> 5.0)
   mysql2
