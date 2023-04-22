@@ -1,3 +1,5 @@
+require: rubocop-minitest
+
 AllCops:
   TargetRubyVersion: 2.7
   NewCops: enable
@@ -5,6 +7,12 @@ AllCops:
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
+
+Style/Documentation:
+  Enabled: false
+
+Metrics:
+  Enabled: false
 
 Bundler/OrderedGems:
   Enabled: false

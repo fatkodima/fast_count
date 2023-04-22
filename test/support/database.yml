@@ -1,0 +1,6 @@
+postgresql:
+  adapter: postgresql
+  host: localhost
+  database: fast_count_test
+  username: postgres
+  password: postgres
