@@ -4,13 +4,17 @@ $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 require "fast_count"
 
 require "pg"
+require "mysql2"
 
 require "minitest/autorun"
+
+adapter = ENV.fetch("DATABASE_ADAPTER")
+puts "Using #{adapter}"
 
 database_yml = File.expand_path("support/database.yml", __dir__)
 ActiveRecord::Base.configurations = YAML.load_file(database_yml)
 
-ActiveRecord::Base.establish_connection(:postgresql)
+ActiveRecord::Base.establish_connection(adapter.to_sym)
 
 if ENV["VERBOSE"]
   ActiveRecord::Base.logger = ActiveSupport::Logger.new($stdout)

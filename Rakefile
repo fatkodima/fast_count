@@ -4,12 +4,20 @@ require "bundler/gem_tasks"
 require "rake/testtask"
 require "rubocop/rake_task"
 
-Rake::TestTask.new(:test) do |t|
-  t.libs << "test"
-  t.libs << "lib"
-  t.test_files = FileList["test/**/*_test.rb"]
+namespace :test do
+  ["postgresql", "mysql2"].each do |adapter|
+    Rake::TestTask.new(adapter) do |t|
+      t.deps = ["set_#{adapter}_env"]
+      t.libs = ["lib", "test"]
+      t.test_files = FileList["test/**/*_test.rb"]
+    end
+
+    task("set_#{adapter}_env") { ENV["DATABASE_ADAPTER"] = adapter }
+  end
 end
 
 RuboCop::RakeTask.new
+
+task test: ["test:postgresql", "test:mysql2"]
 
 task default: :test

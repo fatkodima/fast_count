@@ -4,3 +4,10 @@ postgresql:
   database: fast_count_test
   username: postgres
   password: postgres
+
+mysql2:
+  adapter: mysql2
+  host: localhost
+  database: fast_count_test
+  username: root
+  password: root

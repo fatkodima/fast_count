@@ -7,6 +7,8 @@ module FastCount
       case connection.adapter_name
       when /postg/i # PostgreSQL, PostGIS
         :postgresql
+      when /mysql/i
+        :mysql
       end
     end
   end

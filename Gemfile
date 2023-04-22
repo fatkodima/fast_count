@@ -11,3 +11,4 @@ gem "rubocop", "< 2"
 gem "rubocop-minitest"
 
 gem "pg"
+gem "mysql2"

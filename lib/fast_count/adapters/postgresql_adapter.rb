@@ -3,11 +3,7 @@
 module FastCount
   module Adapters
     # @private
-    class PostgresqlAdapter
-      def initialize(connection)
-        @connection = connection
-      end
-
+    class PostgresqlAdapter < BaseAdapter
       def install
         @connection.execute(<<~SQL)
           CREATE FUNCTION fast_count(table_name text, threshold bigint) RETURNS bigint AS $$
