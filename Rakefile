@@ -5,7 +5,7 @@ require "rake/testtask"
 require "rubocop/rake_task"
 
 namespace :test do
-  ["postgresql", "mysql2"].each do |adapter|
+  ["postgresql", "mysql2", "sqlite3"].each do |adapter|
     Rake::TestTask.new(adapter) do |t|
       t.deps = ["set_#{adapter}_env"]
       t.libs = ["lib", "test"]
@@ -18,6 +18,6 @@ end
 
 RuboCop::RakeTask.new
 
-task test: ["test:postgresql", "test:mysql2"]
+task test: ["test:postgresql", "test:mysql2", "test:sqlite3"]
 
 task default: :test

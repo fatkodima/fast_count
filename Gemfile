@@ -12,3 +12,4 @@ gem "rubocop-minitest"
 
 gem "pg"
 gem "mysql2"
+gem "sqlite3"

@@ -11,3 +11,7 @@ mysql2:
   database: fast_count_test
   username: root
   password: root
+
+sqlite3:
+  adapter: sqlite3
+  database: ':memory:'

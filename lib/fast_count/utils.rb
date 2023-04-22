@@ -9,6 +9,8 @@ module FastCount
         :postgresql
       when /mysql/i
         :mysql
+      when /sqlite/i
+        :sqlite
       end
     end
   end

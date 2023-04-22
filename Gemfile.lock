@@ -47,6 +47,7 @@ GEM
     rubocop-minitest (0.30.0)
       rubocop (>= 1.39, < 2.0)
     ruby-progressbar (1.13.0)
+    sqlite3 (1.6.2-x86_64-darwin)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.4.2)
@@ -62,6 +63,7 @@ DEPENDENCIES
   rake (~> 13.0)
   rubocop (< 2)
   rubocop-minitest
+  sqlite3
 
 BUNDLED WITH
    2.4.12
