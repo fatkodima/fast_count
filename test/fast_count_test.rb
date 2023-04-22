@@ -48,6 +48,22 @@ class FastCountTest < Minitest::Test
     end
   end
 
+  def test_fast_count_respects_configured_threshold
+    previous = FastCount.threshold
+    FastCount.threshold = 10
+
+    5.times { User.create! }
+    if postgresql?
+      @connection.execute("ANALYZE users")
+    elsif mysql?
+      @connection.execute("ANALYZE TABLE users")
+    end
+
+    assert_equal 5, User.fast_count
+  ensure
+    FastCount.threshold = previous
+  end
+
   def test_estimated_count
     assert_kind_of Integer, User.where(admin: true).estimated_count
   end

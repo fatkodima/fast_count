@@ -7,7 +7,7 @@ module FastCount
       #   User.fast_count
       #   User.fast_count(threshold: 50_000)
       #
-      def fast_count(threshold: 100_000)
+      def fast_count(threshold: FastCount.threshold)
         adapter = Adapters.for_connection(connection)
         adapter.fast_count(table_name, threshold)
       end
