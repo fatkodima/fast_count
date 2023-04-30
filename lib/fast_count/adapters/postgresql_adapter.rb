@@ -6,9 +6,23 @@ module FastCount
     class PostgresqlAdapter < BaseAdapter
       def install
         @connection.execute(<<~SQL)
-          CREATE FUNCTION fast_count(table_name text, threshold bigint) RETURNS bigint AS $$
-          DECLARE count bigint;
+          CREATE FUNCTION fast_count(identifier text, threshold bigint) RETURNS bigint AS $$
+          DECLARE
+            count bigint;
+            table_parts text[];
+            schema_name text;
+            table_name text;
             BEGIN
+              SELECT PARSE_IDENT(identifier) INTO table_parts;
+
+              IF ARRAY_LENGTH(table_parts, 1) = 2 THEN
+                schema_name := ''''|| table_parts[1] ||'''';
+                table_name := ''''|| table_parts[2] ||'''';
+              ELSE
+                schema_name := 'ANY (current_schemas(false))';
+                table_name := ''''|| table_parts[1] ||'''';
+              END IF;
+
               EXECUTE '
                 WITH tables_counts AS (
                   -- inherited and partitioned tables counts
@@ -17,22 +31,26 @@ module FastCount
                       (SUM(pg_relation_size(child.oid))::float / (current_setting(''block_size'')::float))::integer AS estimate
                   FROM pg_inherits
                     INNER JOIN pg_class parent ON pg_inherits.inhparent = parent.oid
-                    INNER JOIN pg_class child  ON pg_inherits.inhrelid  = child.oid
-                  WHERE parent.relname = ''' || table_name || '''
+                    LEFT JOIN pg_namespace n ON n.oid = parent.relnamespace
+                    INNER JOIN pg_class child ON pg_inherits.inhrelid = child.oid
+                  WHERE n.nspname = '|| schema_name ||' AND
+                    parent.relname = '|| table_name ||'
 
                   UNION ALL
 
                   -- table count
                   SELECT
                     (reltuples::float / greatest(relpages, 1)) *
-                      (pg_relation_size(pg_class.oid)::float / (current_setting(''block_size'')::float))::integer AS estimate
-                  FROM pg_class
-                  WHERE relname = '''|| table_name ||'''
+                      (pg_relation_size(c.oid)::float / (current_setting(''block_size'')::float))::integer AS estimate
+                  FROM pg_class c
+                    LEFT JOIN pg_namespace n ON n.oid = c.relnamespace
+                  WHERE n.nspname = '|| schema_name ||' AND
+                    c.relname = '|| table_name ||'
                 )
 
                 SELECT
                   CASE
-                  WHEN SUM(estimate) < '|| threshold ||' THEN (SELECT COUNT(*) FROM "'|| table_name ||'")
+                  WHEN SUM(estimate) < '|| threshold ||' THEN (SELECT COUNT(*) FROM '|| identifier ||')
                   ELSE SUM(estimate)
                   END AS count
                 FROM tables_counts' INTO count;

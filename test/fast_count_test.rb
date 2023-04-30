@@ -48,6 +48,24 @@ class FastCountTest < Minitest::Test
     end
   end
 
+  class TestSchemaUser < ActiveRecord::Base
+    self.table_name = "test_schema.users"
+  end
+
+  def test_fast_count_works_with_postgresql_schemas
+    skip unless postgresql?
+
+    begin
+      @connection.create_schema("test_schema")
+      @connection.create_table("test_schema.users")
+      2.times { TestSchemaUser.create! }
+
+      assert_equal 2, TestSchemaUser.fast_count
+    ensure
+      @connection.drop_schema("test_schema")
+    end
+  end
+
   def test_fast_count_respects_configured_threshold
     previous = FastCount.threshold
     FastCount.threshold = 10
