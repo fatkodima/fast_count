@@ -8,12 +8,12 @@ Luckily, there are [some tricks](https://www.citusdata.com/blog/2016/10/12/count
 
 | SQL | Result | Accuracy | Time |
 | --- | --- | --- | --- |
-| `SELECT count(*) FROM small_table;` | `2037104` | `100.000%` | `4.900s` |
-| `SELECT fast_count('small_table');` | `2036407` | `99.965%` | `0.050s` |
-| `SELECT count(*) FROM medium_table;` | `81716243` | `100.000%` | `257.5s` |
-| `SELECT fast_count('medium_table');` | `81600513` | `99.858%` | `0.048s` |
-| `SELECT count(*) FROM large_table;` | `455270802` | `100.000%` | `310.6s` |
-| `SELECT fast_count('large_table');` | `454448393` | `99.819%` | `0.046s` |
+| `SELECT count(*) FROM small_table` | `2037104` | `100.000%` | `4.900s` |
+| `SELECT fast_count('small_table')` | `2036407` | `99.965%` | `0.050s` |
+| `SELECT count(*) FROM medium_table` | `81716243` | `100.000%` | `257.5s` |
+| `SELECT fast_count('medium_table')` | `81600513` | `99.858%` | `0.048s` |
+| `SELECT count(*) FROM large_table` | `455270802` | `100.000%` | `310.6s` |
+| `SELECT fast_count('large_table')` | `454448393` | `99.819%` | `0.046s` |
 
 *These metrics were pulled from real PostgreSQL databases being used in a production environment.*
 
@@ -65,11 +65,15 @@ end
 
 ## Usage
 
-To get an estimated count of the rows in a table:
+### Estimated table count
+
+To quickly get an estimated count of the rows in a table:
 
 ```ruby
 User.fast_count # => 1_254_312_219
 ```
+
+### Result set size estimation
 
 If you want to quickly get an estimation of how many rows will the query return, without actually executing it, yo can run:
 
