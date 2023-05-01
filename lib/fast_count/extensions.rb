@@ -3,6 +3,9 @@
 module FastCount
   module Extensions
     module ModelExtension
+      # Returns an estimated number of rows in the table.
+      # Runs in milliseconds.
+      #
       # @example
       #   User.fast_count
       #   User.fast_count(threshold: 50_000)
@@ -14,6 +17,9 @@ module FastCount
     end
 
     module RelationExtension
+      # Returns an estimated number of rows that the query will return
+      # (without actually executing it).
+      #
       # @example
       #   User.where.missing(:avatar).estimated_count
       #
