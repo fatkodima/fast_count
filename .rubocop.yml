@@ -31,3 +31,6 @@ Bundler/OrderedGems:
 
 Gemspec/RequireMFA:
   Enabled: false
+
+Minitest/EmptyLineBeforeAssertionMethods:
+  Enabled: false

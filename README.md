@@ -83,6 +83,23 @@ User.where.missing(:avatar).estimated_count # => 324_200
 
 **Note**: `estimated_count` relies on the database query planner estimations (basically on the output of `EXPLAIN`) to get its results and can be very imprecise. It is better be used to get an idea of the order of magnitude of the future result.
 
+### Exact distinct values count
+
+To quickly get an exact number of distinct values in a column, you can run:
+
+```ruby
+User.fast_distinct_count(column: :company_id) # => 243
+```
+
+It is suited for cases when there is a small amount of distinct values in a column compared to a total number
+of values (for example, 10M rows total and 200 distinct values).
+
+Runs orders of magnitude faster than `SELECT COUNT(DISTINCT column) FROM table`.
+
+**Note**: You need to have an index starting with the specified column for this to work.
+
+Uses a ["Loose Index Scan" technique](https://wiki.postgresql.org/wiki/Loose_indexscan).
+
 ## Configuration
 
 You can override the following default options:

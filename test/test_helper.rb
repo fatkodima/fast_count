@@ -26,7 +26,9 @@ end
 
 ActiveRecord::Schema.define do
   create_table :users, force: true do |t|
+    t.string :name
     t.boolean :admin, null: false, default: false
+    t.integer :company_id
   end
 end
 

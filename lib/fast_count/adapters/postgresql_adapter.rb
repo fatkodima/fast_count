@@ -74,6 +74,43 @@ module FastCount
         query_plan = @connection.select_value("EXPLAIN #{sql}")
         query_plan.match(/rows=(\d+)/)[1].to_i
       end
+
+      def fast_distinct_count(table_name, column_name)
+        unless index_exists?(table_name, column_name)
+          raise "Index starting with '#{column_name}' must exist on '#{table_name}' table"
+        end
+
+        table = @connection.quote_table_name(table_name)
+        column = @connection.quote_column_name(column_name)
+
+        @connection.select_value(<<~SQL)
+          WITH RECURSIVE t AS (
+            (SELECT #{column} FROM #{table} ORDER BY #{column} LIMIT 1)
+            UNION
+            SELECT (SELECT #{column} FROM #{table} WHERE #{column} > t.#{column} ORDER BY #{column} LIMIT 1)
+            FROM t
+            WHERE t.#{column} IS NOT NULL
+          ),
+
+          distinct_values AS (
+            SELECT #{column} FROM t WHERE #{column} IS NOT NULL
+            UNION
+            SELECT NULL WHERE EXISTS (SELECT 1 FROM #{table} WHERE #{column} IS NULL)
+          )
+
+          SELECT COUNT(*) FROM distinct_values
+        SQL
+      end
+
+      private
+        def index_exists?(table_name, column_name)
+          indexes = @connection.schema_cache.indexes(table_name)
+          indexes.find do |index|
+            index.using == :btree &&
+              index.where.nil? &&
+              Array(index.columns).first == column_name.to_s
+          end
+        end
     end
   end
 end

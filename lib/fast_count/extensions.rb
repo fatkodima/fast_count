@@ -14,6 +14,26 @@ module FastCount
         adapter = Adapters.for_connection(connection)
         adapter.fast_count(table_name, threshold)
       end
+
+      # Returns an exact number of distinct values in a column.
+      # It is suited for cases, when there is a small amount
+      # of distinct values in a column compared to a total number
+      # of values (for example, 10M rows total and 500 distinct values).
+      #
+      # Runs orders of magnitude faster than 'SELECT COUNT(DISTINCT column) ...'.
+      #
+      # Note: You need to have an index starting with the specified column
+      # for this to work.
+      #
+      # Uses an "Loose Index Scan" technique (see https://wiki.postgresql.org/wiki/Loose_indexscan).
+      #
+      # @example
+      #   User.fast_distinct_count(column: :company_id)
+      #
+      def fast_distinct_count(column:)
+        adapter = Adapters.for_connection(connection)
+        adapter.fast_distinct_count(table_name, column)
+      end
     end
 
     module RelationExtension

@@ -21,6 +21,28 @@ module FastCount
         query_plan = @connection.select_value("EXPLAIN format=tree #{sql}")
         query_plan.match(/rows=(\d+)/)[1].to_i
       end
+
+      # MySQL already supports "Loose Index Scan" (see https://dev.mysql.com/doc/refman/8.0/en/group-by-optimization.html),
+      # so we can just directly run the query.
+      def fast_distinct_count(table_name, column_name)
+        unless index_exists?(table_name, column_name)
+          raise "Index starting with '#{column_name}' must exist on '#{table_name}' table"
+        end
+
+        @connection.select_value(<<~SQL)
+          SELECT COUNT(*) FROM (
+            SELECT DISTINCT #{@connection.quote_column_name(column_name)} FROM #{@connection.quote_table_name(table_name)}
+          ) AS tmp
+        SQL
+      end
+
+      private
+        def index_exists?(table_name, column_name)
+          indexes = @connection.schema_cache.indexes(table_name)
+          indexes.find do |index|
+            index.using == :btree && Array(index.columns).first == column_name.to_s
+          end
+        end
     end
   end
 end

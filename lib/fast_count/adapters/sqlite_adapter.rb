@@ -15,6 +15,14 @@ module FastCount
       def estimated_count(sql)
         @connection.select_value("SELECT COUNT(*) FROM (#{sql})")
       end
+
+      def fast_distinct_count(table_name, column_name)
+        @connection.select_value(<<~SQL)
+          SELECT COUNT(*) FROM (
+            SELECT DISTINCT #{@connection.quote_column_name(column_name)} FROM #{@connection.quote_table_name(table_name)}
+          ) AS tmp
+        SQL
+      end
     end
   end
 end
