@@ -51,6 +51,12 @@ $ gem install fast_count
 
 If you are using PostgreSQL, you need to create a database function, used internally:
 
+```sh
+$ rails generate migration install_fast_count
+```
+
+with the content:
+
 ```ruby
 class InstallFastCount < ActiveRecord::Migration[7.0]
   def up
