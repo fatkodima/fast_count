@@ -1,0 +1,9 @@
+class <%= migration_class_name %> < ActiveRecord::Migration<%= migration_version %>
+  def up
+    FastCount.install
+  end
+    
+  def down
+    FastCount.uninstall
+  end
+end
