@@ -1,5 +1,7 @@
 ## master (unreleased)
 
+## 0.2.0 (2023-07-24)
+
 - Support for quickly getting an exact number of distinct values in a column
 
     It is suited for cases, when there is a small amount of distinct values in a column compared to a total number
