@@ -38,6 +38,8 @@ module FastCount
 
       private
         def index_exists?(table_name, column_name)
+          return true if @connection.schema_cache.primary_keys(table_name) == column_name.to_s
+
           indexes = @connection.schema_cache.indexes(table_name)
           indexes.find do |index|
             index.using == :btree && Array(index.columns).first == column_name.to_s
