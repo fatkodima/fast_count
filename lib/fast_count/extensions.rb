@@ -31,6 +31,10 @@ module FastCount
       #   User.fast_distinct_count(column: :company_id)
       #
       def fast_distinct_count(column:)
+        if column.to_s == primary_key
+          raise "Use `#fast_count` when counting primary keys."
+        end
+
         adapter = Adapters.for_connection(connection)
         adapter.fast_distinct_count(table_name, column)
       end

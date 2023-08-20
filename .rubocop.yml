@@ -17,6 +17,9 @@ Style/SymbolArray:
 Style/WordArray:
   EnforcedStyle: brackets
 
+Style/IfUnlessModifier:
+  Enabled: false
+
 Layout/IndentationConsistency:
   EnforcedStyle: indented_internal_methods
 

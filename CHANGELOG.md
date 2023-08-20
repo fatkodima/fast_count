@@ -1,5 +1,7 @@
 ## master (unreleased)
 
+- Raise when `fast_distinct_count` is used on primary key
+
 ## 0.2.0 (2023-07-24)
 
 - Support for quickly getting an exact number of distinct values in a column

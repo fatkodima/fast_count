@@ -121,6 +121,13 @@ class FastCountTest < Minitest::Test
     @connection.remove_index(:users, :company_id)
   end
 
+  def test_fast_distinct_count_on_primary_key
+    error = assert_raises(RuntimeError) do
+      User.fast_distinct_count(column: :id)
+    end
+    assert_equal "Use `#fast_count` when counting primary keys.", error.message
+  end
+
   def test_fast_distinct_count_counts_nulls
     @connection.add_index(:users, :company_id)
     @connection.execute(<<~SQL)
