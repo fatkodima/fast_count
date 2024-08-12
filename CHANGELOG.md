@@ -1,5 +1,7 @@
 ## master (unreleased)
 
+## 0.3.0 (2024-08-12)
+
 - Raise when `fast_distinct_count` is used on primary key
 
 ## 0.2.0 (2023-07-24)
