@@ -81,7 +81,7 @@ User.fast_count # => 1_254_312_219
 
 ### Result set size estimation
 
-If you want to quickly get an estimation of how many rows will the query return, without actually executing it, yo can run:
+If you want to quickly get an estimation of how many rows will the query return, without actually executing it, you can run:
 
 ```ruby
 User.where.missing(:avatar).estimated_count # => 324_200
