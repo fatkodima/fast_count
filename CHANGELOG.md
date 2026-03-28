@@ -1,5 +1,7 @@
 ## master (unreleased)
 
+- Drop support for Ruby < 3.2 and Rails < 7.1
+
 ## 0.3.0 (2024-08-12)
 
 - Raise when `fast_distinct_count` is used on primary key

@@ -1,7 +1,7 @@
 require: rubocop-minitest
 
 AllCops:
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: 3.2
   NewCops: enable
   SuggestExtensions: false
 
@@ -19,6 +19,10 @@ Style/WordArray:
 
 Style/IfUnlessModifier:
   Enabled: false
+
+Style/OneClassPerFile:
+  Exclude:
+    - test/**/*
 
 Layout/IndentationConsistency:
   EnforcedStyle: indented_internal_methods

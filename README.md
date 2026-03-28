@@ -24,8 +24,8 @@ Supports PostgreSQL, MySQL, MariaDB, and SQLite.
 
 ## Requirements
 
-- Ruby 2.7+
-- ActiveRecord 6+
+- Ruby 3.2+
+- ActiveRecord 7.1+
 
 If you need support for older versions, [open an issue](https://github.com/fatkodima/fast_count/issues/new).
 
